@@ -30,7 +30,7 @@ class Proff(models.Model):
 
 class Post(models.Model):
 	post = models.CharField(max_length=300)
-	poster = models.OneToOneField(User)		
+	poster = models.CharField(max_length=200)		
 	pub_time = models.DateTimeField(auto_now_add=True)	
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 	def __str__(self):
@@ -40,7 +40,7 @@ class Post(models.Model):
 class Comment(models.Model):
 	comment = models.CharField(max_length=200)
 	pub_time = models.DateTimeField(auto_now_add=True)
-	commenter = models.OneToOneField(User)
+	commenter = models.CharField(max_length=200)
 	post = models.ForeignKey(Post, on_delete=models.CASCADE)
 	def __str__(self):
 		return self.comment

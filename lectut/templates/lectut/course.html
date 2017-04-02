@@ -1,0 +1,15 @@
+<h1>{{ course.courseName }}</h1>
+<h2> New Post</h2>
+<form action="{% url 'lectut:posting' userid course.id %}" method="post">
+{% csrf_token %}
+{{ form }}
+<input type="submit" value="Post" />
+</form>
+
+<h2>POSTS</h2>
+
+	{% for pos in course.post_set.all%}
+	<ul>
+		<li><ul><li>{{ pos.post}}</li><li>{{ pos.pub_time}}</li><li>{{ pos.poster }}</li></ul>
+	</ul>
+	{% endfor%}

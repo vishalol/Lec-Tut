@@ -1,0 +1,23 @@
+
+<h1>{{ user.name }}</h1>
+
+<br><br>
+
+<h2>Courses</h2>
+
+{% for course in user.courses.all %}
+<ul>
+	<li><a href="{% url 'lectut:coursepage' userid course.id %}">{{ course.courseName }}</a></li>
+	
+</ul>
+{% endfor %}
+
+
+<h2>POSTS</h2>
+{% for course in user.courses.all %}
+	{% for pos in course.post_set.all%}
+	<ul>
+		<li><ul><li>{{ pos.post}}</li><li>{{ pos.pub_time}}</li></ul>
+	</ul>
+	{% endfor%}
+{% endfor %}
