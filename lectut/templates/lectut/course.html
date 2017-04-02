@@ -2,7 +2,7 @@
 <h2> New Post</h2>
 <form action="{% url 'lectut:posting' userid course.id %}" method="post">
 {% csrf_token %}
-{{ form }}
+{{ form1 }}
 <input type="submit" value="Post" />
 </form>
 
@@ -10,6 +10,22 @@
 
 	{% for pos in course.post_set.all%}
 	<ul>
-		<li><ul><li>{{ pos.post}}</li><li>{{ pos.pub_time}}</li><li>{{ pos.poster }}</li></ul>
+		<li><ul><li>{{ pos.post}}</li><li>{{ pos.pub_time}}</li>
+		<li><a href="{% url 'lectut:userprofile' pos.poster %}">{{ pos.poster }}</a></li>
+		<li><form action="{% url 'lectut:commenting' userid course.id pos.id%}" method="post">
+			{% csrf_token %}
+			{{ form2 }}
+			<input type="submit" value="Post" />
+			</form>
+			{% for com in pos.comment_set.all%}
+			<ul>
+				<li>{{ com.comment}}</li><li>{{ com.pub_time}}</li>
+				<li><a href="{% url 'lectut:userprofile' com.commenter %}">{{ com.commenter }}</a></li>
+			</ul>
+			{% endfor %}
+		</li>	
+		</ul>
 	</ul>
 	{% endfor%}
+
+<h2><a href="{% url 'lectut:logo' %}">LOGOUT</a></h2>	

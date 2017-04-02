@@ -21,9 +21,16 @@ def index(request):
 	return render(request, 'lectut/index.html', {'form': form})
 
 def coursepage(request,user_id, course_id):
-	form = PostForm()
-	course = get_object_or_404(Course, pk=course_id)
-	return render(request, 'lectut/course.html', {'course': course,  'userid': user_id, 'form': form})
+	if request.user.is_authenticated():
+		form1 = PostForm()
+		form2 = CommentForm()
+		course = get_object_or_404(Course, pk=course_id)
+		return render(request, 'lectut/course.html', {'course': course,  'userid': user_id, 'form1': form1, 'form2':form2})
+	else:
+		messages.error(request, 'You have to login 1st')
+		return HttpResponseRedirect(reverse('lectut:index'))
+		
+
 
 def profile(request, user_id, ):
 	if request.user.is_authenticated():
@@ -38,6 +45,7 @@ def profile(request, user_id, ):
 	else:
 		messages.error(request, 'You have to login 1st')
 		return HttpResponseRedirect(reverse('lectut:index'))	
+
 
 
 def log(request):
@@ -62,9 +70,35 @@ def logo(request):
 	logout(request)
 	return HttpResponseRedirect(reverse('lectut:index'))
 
+
+
 def posting(request,user_id, course_id):
 		if request.method == 'POST':
 			user = get_object_or_404(User, pk=user_id)
 			course = get_object_or_404(Course, pk=course_id)
 			course.post_set.create(post=request.POST['Post'], poster=user.username)
 			return HttpResponseRedirect(reverse('lectut:coursepage', args=(user.id,course_id)))
+
+
+
+def commenting(request,user_id, course_id, post_id):
+		if request.method == 'POST':
+			user = get_object_or_404(User, pk=user_id)
+			post = get_object_or_404(Post, pk=post_id)
+			post.comment_set.create(comment=request.POST['Comment'], commenter=user.username)
+			return HttpResponseRedirect(reverse('lectut:coursepage', args=(user.id,course_id)))	
+
+
+
+def userprofile(request, username):
+	if request.user.is_authenticated():
+		user = get_object_or_404(User, username=username)
+		if(hasattr(user, 'student')):
+			student = user.student
+			return render(request, 'lectut/userprofile.html', {'user': student, 'userid': user.id, 'typ':'stud'})
+		else:
+			proff = user.proff
+			return render(request, 'lectut/userprofile.html', {'user':proff, 'userid': user.id})
+	else:
+		messages.error(request, 'You have to login 1st')
+		return HttpResponseRedirect(reverse('lectut:index'))

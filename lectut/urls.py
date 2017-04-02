@@ -10,5 +10,7 @@ urlpatterns = [
     url(r'^logo/$', views.logo, name='logo'),
     url(r'^(?P<user_id>[0-9]+)/profile/$', views.profile, name='profile'),
     url(r'^(?P<user_id>[0-9]+)/profile/(?P<course_id>[0-9]+)/course/$', views.coursepage, name='coursepage'),
-	url(r'^(?P<user_id>[0-9]+)/profile/(?P<course_id>[0-9]+)/course/posting/$', views.posting, name='posting'),   
+	url(r'^(?P<user_id>[0-9]+)/profile/(?P<course_id>[0-9]+)/course/posting/$', views.posting, name='posting'),
+	url(r'^(?P<user_id>[0-9]+)/profile/(?P<course_id>[0-9]+)/course/(?P<post_id>[0-9]+)/commenting/$', views.commenting, name='commenting'),   
+    url(r'^(?P<username>[\w.@+-]+)/userprofile/$', views.userprofile, name='userprofile'),
 ]

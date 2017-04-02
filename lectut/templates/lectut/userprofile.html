@@ -1,0 +1,28 @@
+{% if typ %}
+<h1>{{ user.name }}</h1>
+<h3>{{ user.enrollmentno }}</h3>
+<h3>{{ user.branch }}</h3>
+<h3>{{ user.year }}</h3>
+<h3>Courses</h3>
+{% for course in user.courses.all %}
+<ul>
+	<li><a href="{% url 'lectut:coursepage' userid course.id %}">{{ course.courseName }}</a></li>
+	
+</ul>
+{% endfor %}
+
+
+{% else %}
+<h1>{{ user.name }}</h1>
+<h3>Courses</h3>
+{% for course in user.courses.all %}
+<ul>
+	<li><a href="{% url 'lectut:coursepage' userid course.id %}">{{ course.courseName }}</a></li>
+	
+</ul>
+{% endfor %}
+
+{% endif %}
+
+<h2><a href="{% url 'lectut:logo' %}">LOGOUT</a></h2>
+
