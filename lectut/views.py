@@ -35,6 +35,7 @@ def coursepage(request,user_id, course_id):
 def profile(request, user_id, ):
 	if request.user.is_authenticated():
 		user = get_object_or_404(User, pk=user_id)
+		latest_post = Post.objects.order_by('-pub_date')[:5]
 		if(hasattr(user, 'student')):
 			student = user.student
 			return render(request, 'lectut/profile.html', {'user': student, 'userid': user_id})
