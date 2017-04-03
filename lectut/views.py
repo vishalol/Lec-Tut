@@ -53,7 +53,16 @@ def profile(request, user_id, ):
 			return render(request, 'lectut/profile.html', {'user': student, 'latestpost':zip(list2, list3),'userid': user_id, 'form2':form2})
 		else:
 			proff = user.proff
-			return render(request, 'lectut/profile.html', {'user':proff, 'userid': user_id})
+			list1 = proff.courses.all()
+			list2 = []
+			list3 = []
+			for course in list1:
+				pos = course.post_set.all().order_by('-pub_time')[:1]
+				if(pos):
+					list2.append(pos[0])
+
+					list3.append(course)
+			return render(request, 'lectut/profile.html', {'user':proff, 'latestpost':zip(list2, list3),'userid': user_id, 'form2':form2})
 
 	else:
 		messages.error(request, 'You have to login 1st')

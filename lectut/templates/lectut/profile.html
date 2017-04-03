@@ -17,17 +17,17 @@
 {% for pos, course in latestpost %}
 
 <ul>
-	<li><ul><li><h3>{{ course.courseName }}</h3></li><li>{{ pos.post}}</li><li>{{ pos.pub_time}}</li>
-		<li><a href="{% url 'lectut:userprofile' pos.poster %}">{{ pos.poster }}</a></li>
+	<li><ul><li><h3> {{ course.courseName }}</h3></li><li>{{ pos.post}}</li><li>Posted on : {{ pos.pub_time}}</li>
+		<li>Posted by :<a href="{% url 'lectut:userprofile' pos.poster %}">{{ pos.poster }}</a></li>
 		<li><form action="{% url 'lectut:commenting' userid course.id pos.id%}" method="post">
 			{% csrf_token %}
 			{{ form2 }}
 			<input type="submit" value="Post" />
 			</form>
-			{% for com in pos.comment_set.all%}
+			{% for com in pos.comment_set.all %}
 			<ul>
-				<li>{{ com.comment}}</li><li>{{ com.pub_time}}</li>
-				<li><a href="{% url 'lectut:userprofile' com.commenter %}">{{ com.commenter }}</a></li>
+				<li>{{ com.comment }}</li><li>{{ com.pub_time }}</li>
+				<li>By: <a href="{% url 'lectut:userprofile' com.commenter %}">{{ com.commenter }}</a></li>
 			</ul>
 			{% endfor %}
 		</li>	
