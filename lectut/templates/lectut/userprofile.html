@@ -6,7 +6,7 @@
 <h3>Courses</h3>
 {% for course in user.courses.all %}
 <ul>
-	<li><a href="{% url 'lectut:coursepage' userid course.id %}">{{ course.courseName }}</a></li>
+	<li><a href="{% url 'lectut:coursepage' course.id %}">{{ course.courseName }}</a></li>
 	
 </ul>
 {% endfor %}
@@ -17,7 +17,7 @@
 <h3>Courses</h3>
 {% for course in user.courses.all %}
 <ul>
-	<li><a href="{% url 'lectut:coursepage' userid course.id %}">{{ course.courseName }}</a></li>
+	<li><a href="{% url 'lectut:coursepage' course.id %}">{{ course.courseName }}</a></li>
 	
 </ul>
 {% endfor %}
@@ -25,4 +25,5 @@
 {% endif %}
 
 <h2><a href="{% url 'lectut:logo' %}">LOGOUT</a></h2>
+<h2><a href="{% url 'lectut:homepage' %}">HOME</a></h2>
 

@@ -2,8 +2,13 @@
     {% csrf_token %}
     {{ form }}
     <br>
-  <input type="submit" value="Submit">
+  <input type="submit" value="Login">
 </form>
+<br><br>
+
+<h2><a href="{% url 'lectut:signup' %}">Signup</a></h2>
+
+
 
     {% if error_message %}
     <span>{{ error_message }}</span>

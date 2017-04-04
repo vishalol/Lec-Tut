@@ -1,0 +1,6 @@
+<form action="{% url 'lectut:studentSignup' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <br>
+  <input type="submit" value="Submit">
+</form>
