@@ -55,4 +55,5 @@ class ProffSignup(forms.ModelForm):
     class Meta:
         model = Proff
         fields = ['name', 'courses']
-        exclude = ['user']        		
+        exclude = ['user']
+                		
