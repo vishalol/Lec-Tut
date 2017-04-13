@@ -41,28 +41,25 @@ def profile(request ):
 		if(hasattr(user, 'student')):
 			student = user.student
 			list1 = student.courses.all()
-			list2 = []
-			list3 = []
+			postlist = []
+			recentpostlist = [];
 			for course in list1:
-				pos = course.post_set.all().order_by('-pub_time')[:1]
-				if(pos):
-					list2.append(pos[0])
-
-					list3.append(course)
-
-			return render(request, 'lectut/profile.html', {'user': student, 'latestpost':zip(list2, list3),'userid': user.id, 'form2':form2})
+				post = course.post_set.all()
+				for pos in post:
+					postlist.append(pos)
+			recentpostlist = sorted(postlist, key=lambda x: x.pub_time, reverse=True)[:5]	
+			return render(request, 'lectut/profile.html', {'user': student, 'latestpost':recentpostlist,'userid': user.id, 'form2':form2})
 		else:
 			proff = user.proff
 			list1 = proff.courses.all()
-			list2 = []
-			list3 = []
+			postlist = []
+			recentpostlist = [];
 			for course in list1:
-				pos = course.post_set.all().order_by('-pub_time')[:1]
-				if(pos):
-					list2.append(pos[0])
-
-					list3.append(course)
-			return render(request, 'lectut/profile.html', {'user':proff, 'latestpost':zip(list2, list3),'userid': user.id, 'form2':form2})
+				post = course.post_set.all()
+				for pos in post:
+					postlist.append(pos)
+			recentpostlist = sorted(postlist, key=lambda x: x.pub_time, reverse=True)[:5]
+			return render(request, 'lectut/profile.html', {'user':proff, 'latestpost':recentpostlist,'userid': user.id, 'form2':form2})
 
 	else:
 		messages.error(request, 'You have to login 1st')
