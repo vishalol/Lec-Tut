@@ -7,7 +7,7 @@
 </ul>
 	{% endif %}
 <h2> New Post</h2>
-<form action="{% url 'lectut:posting' course.id %}" method="post">
+<form action="{% url 'lectut:posting' course.id %}" enctype = "multipart/form-data" method="post">
 {% csrf_token %}
 {{ form1 }}
 <input type="submit" value="Post" />
@@ -18,6 +18,7 @@
 	{% for pos in course.post_set.all reversed %}
 	<ul>
 		<li><ul><li>{{ pos.post}}</li><li>Posted on : {{ pos.pub_time}}</li>
+		{% if pos.docfile %} <li><a href="{{ pos.docfile.url }}">File</a></li>{% endif %}
 		<li>Posted by : <a href="{% url 'lectut:userprofile' pos.poster %}">{{ pos.poster }}</a></li>
 		<li><form action="{% url 'lectut:commenting' course.id pos.id%}" method="post">
 			{% csrf_token %}
