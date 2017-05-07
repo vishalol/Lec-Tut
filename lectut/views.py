@@ -9,6 +9,8 @@ from .forms import *
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+
+#login page
 def index(request):
     if request.user.is_authenticated():
         user = request.user
@@ -22,6 +24,7 @@ def index(request):
     return render(request, 'lectut/index.html', {'form': form})
 
 
+# different course pages
 def coursepage(request, course_id):
     if request.user.is_authenticated():
         form1 = PostForm()
@@ -33,6 +36,7 @@ def coursepage(request, course_id):
         return HttpResponseRedirect(reverse('lectut:index'))
         
 
+# profile page shown just after login
 def profile(request ):
     if request.user.is_authenticated():
         user = request.user
@@ -67,7 +71,7 @@ def profile(request ):
         return HttpResponseRedirect(reverse('lectut:index'))    
 
 
-
+# for loggin in user and redirecting to profile page upon successful login
 def log(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -85,13 +89,13 @@ def log(request):
         return HttpResponseRedirect(reverse('lectut:index'))
 
 
-
+# log out the user
 def logo(request):
     logout(request)
     return HttpResponseRedirect(reverse('lectut:index'))
 
 
-
+# for handling the posts added from coursepage
 def posting(request, course_id):
         if request.method == 'POST':
             user = request.user
@@ -112,7 +116,7 @@ def posting(request, course_id):
                 messages.error(request, 'You cannot post in this course')
                 return HttpResponseRedirect(reverse('lectut:coursepage', args=(course_id))) 
 
-
+# handling the comments on posts from coursepage
 def commenting(request, course_id, post_id):
         if request.method == 'POST':
             user = request.user
@@ -132,7 +136,7 @@ def commenting(request, course_id, post_id):
                 messages.error(request, 'You cannot comment on this course')
                 return HttpResponseRedirect(reverse('lectut:coursepage', args=(course_id)))
 
-
+# handling the comments on posts from profilepage
 def profilecommenting(request, course_id, post_id):
         if request.method == 'POST':
             user = request.user
@@ -152,7 +156,7 @@ def profilecommenting(request, course_id, post_id):
                 messages.error(request, 'You cannot comment on this course')
                 return HttpResponseRedirect(reverse('lectut:profile'))              
 
-
+# displaying profile of different users
 def userprofile(request, username):
     if request.user.is_authenticated():
         user = get_object_or_404(User, username=username)
@@ -170,7 +174,7 @@ def userprofile(request, username):
 def homepage(request):
     return HttpResponseRedirect(reverse('lectut:profile'))
 
-
+# views for creaing new users
 def signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
