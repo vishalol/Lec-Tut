@@ -25,19 +25,19 @@
 			{{ form2 }}
 			<input type="submit" value="Post" />
 			</form>
-			<span id = "status">
+			<span id = "{{ pos.id }}-status">
 				{% if request.user in pos.likes.all %} Liked {% endif %}
 				{% if request.user in pos.unlikes.all %} Unliked {% endif %}
 			</span>
-			<li id = 'like'> Likes: {{ pos.likes.count }}</li>
-			<li id = 'unlike'> Unlikes: {{ pos.unlikes.count }}</li>
-			<input type="button" id="like" name="{{ pos.id }}" value="Like" onclick="likepost(this.name)" />
-			<input type="button" id="unlike" name="{{ pos.id }}" value="Unlike" onclick="unlikepost(this.name)" />
+			<li id = '{{pos.id }}-like'> Likes: {{ pos.likes.count }}</li>
+			<li id = '{{pos.id }}-unlike'> Unlikes: {{ pos.unlikes.count }}</li>
+			<input type="button" id="{{ pos.id }}-likebutton" name="{{ pos.id }}" value="Like" onclick="likepost(this.name)" />
+			<input type="button" id="{{ pos.id }}-unlikebutton" name="{{ pos.id }}" value="Unlike" onclick="unlikepost(this.name)" />
 
 
 			{% for com in pos.comment_set.all reversed %}
 			<ul>
-				<li>{{ com.comment}}</li><li>{{ com.pub_time}}</li>
+				<li>{{ com.comment }}</li><li>{{ com.pub_time }}</li>
 				<li><a href="{% url 'lectut:userprofile' com.commenter %}">By: {{ com.commenter }}</a></li>
 			</ul>
 			{% endfor %}
@@ -50,43 +50,7 @@
 <h2><a href="{% url 'lectut:homepage' %}">HOME</a></h2>
 
 <script>
-$('#like').click(function(){
-		console.log('yoo')
-      $.ajax({
-               type: "POST",
-               url: "{% url 'lectut:like' %}",
-               data: {'post_id': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
-               dataType: "json",
-               success: function(response) {
-                    if(response.like!=0){ $('#status').text('Liked')};
-                    if(response.unlike!=0) {$('#status').text('Unliked')};
-                    $('#unlike').text('Unlikes: {{ response.unlikes_count }}');
-                    $('#like').text('Likes: {{ response.likes_count }}');
-                },
-                error: function(rs, e) {
-                       alert(rs.responseText);
-                }
-          }); 
-    });
 
-$('#unlike').click(function(){
-		console.log('hello');
-      $.ajax({
-               type: "POST",
-               url: "{% url 'lectut:unlike' %}",
-               data: {'post_id': $(this).attr('name'), 'csrfmiddlewaretoken': '{{ csrf_token }}'},
-               dataType: "json",
-               success: function(response) {
-                      if(response.like) $('#status').html("").html('<div>Liked</div>');
-                      if(response.unlike) $('#status').html("").html('<div>Unliked</div>');
-                      $('#unlike').text('Unlikes: {{ response.unlikes_count }}');
-                      $('#like').text('Likes: {{ response.likes_count }}');
-                },
-                error: function(rs, e) {
-                       alert(rs.responseText);
-                }
-          }); 
-    });
 function likepost(name){
 		console.log(name);
       $.ajax({
@@ -95,11 +59,11 @@ function likepost(name){
                data: {'post_id': name, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
                dataType: "json",
                success: function(response) {
-               		$('#status').text("")
-                    if( response.like!=0){ $('#status').text('Liked')};
-                    if(response.unlike !=0) {$('#status').text('Unliked')};
-                   $('#unlike').text('Unlikes: ' + response.unlikes_count );
-                    $('#like').text('Likes: ' + response.likes_count );
+               		$('#'+name+'-status').text("")
+                    if( response.like!=0){ $('#'+name+'-status').text('Liked')};
+                    if(response.unlike !=0) {$('#'+name+'-status').text('Unliked')};
+                   $('#'+name+'-unlike').text('Unlikes: ' + response.unlikes_count );
+                    $('#'+name+'-like').text('Likes: ' + response.likes_count );
                 },
                 error: function(rs, e) {
                        alert(rs.responseText);
@@ -116,11 +80,11 @@ function unlikepost(name){
                dataType: "json",
                success: function(response) {
 	$('#status').text("")
-					$('#status').text("")
-                    if( response.like!=0){ $('#status').text('Liked')};
-                    if(response.unlike !=0) {$('#status').text('Unliked')};
-                    $('#unlike').text('Unlikes: ' + response.unlikes_count );
-                    $('#like').text('Likes: ' + response.likes_count );
+					$('#'+name+'-status').text("")
+                    if( response.like!=0){ $('#'+name+'-status').text('Liked')};
+                    if(response.unlike !=0) {$('#'+name+'-status').text('Unliked')};
+                    $('#'+name+'-unlike').text('Unlikes: ' + response.unlikes_count );
+                    $('#'+name+'-like').text('Likes: ' + response.likes_count );
                 },
                 error: function(rs, e) {
                        alert(rs.responseText);
