@@ -18,4 +18,6 @@ urlpatterns = [
     url(r'^(?P<username>[\w.@+-]+)/userprofile/$', views.userprofile, name='userprofile'),
     url(r'^profile/(?P<course_id>[0-9]+)/course/(?P<post_id>[0-9]+)/profilecommenting/$', views.profilecommenting, name='profilecommenting'),
     url(r'^homepage/$', views.homepage, name='homepage'),
+    url(r'^like/$', views.like, name='like'),
+    url(r'^unlike/$', views.unlike, name='unlike'),
 ]

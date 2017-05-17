@@ -7,6 +7,10 @@ from django.views import generic
 from django.contrib import messages
 from .forms import *
 from django.contrib.auth.decorators import login_required
+try:
+    from django.utils import simplejson as json
+except ImportError:
+    import json
 # Create your views here.
 
 
@@ -171,8 +175,55 @@ def userprofile(request, username):
         return HttpResponseRedirect(reverse('lectut:index'))
 
 
+
 def homepage(request):
     return HttpResponseRedirect(reverse('lectut:profile'))
+
+
+def like(request):
+    if request.method == 'POST':
+        user = request.user
+        postId = request.POST['post_id']
+        post = get_object_or_404(Post, pk = postId)
+        if post.likes.filter(id = user.id).exists():
+            post.likes.remove(user)
+            likecounter = 0
+            unlikecounter = 0
+        elif post.unlikes.filter(id = user.id).exists():
+            post.unlikes.remove(user)
+            post.likes.add(user)
+            likecounter = 1
+            unlikecounter = 0  
+        else:
+            post.likes.add(user)
+            likecounter = 1
+            unlikecounter = 0
+            
+    ctx = {'likes_count': post.likes.count(), 'unlikes_count': post.unlikes.count(), 'like': likecounter, 'unlike': unlikecounter}
+    return HttpResponse(json.dumps(ctx), content_type='application/json')
+
+
+def unlike(request):
+    if request.method == 'POST':
+        user = request.user
+        postId = request.POST['post_id']
+        post = get_object_or_404(Post, id = postId)
+        if post.unlikes.filter(id = user.id).exists():
+            post.unlikes.remove(user)
+            likecounter = 0
+            unlikecounter = 0
+        elif post.likes.filter(id = user.id).exists():
+            post.likes.remove(user)
+            post.unlikes.add(user)
+            likecounter = 0
+            unlikecounter = 1  
+        else:
+            post.unlikes.add(user)
+            likecounter = 0
+            unlikecounter = 1
+    ctx = {'likes_count': post.likes.count(),'unlikes_count': post.unlikes.count(), 'like': likecounter, 'unlike': unlikecounter}
+    return HttpResponse(json.dumps(ctx), content_type='application/json')  
+
 
 # views for creaing new users
 def signup(request):
@@ -190,7 +241,6 @@ def signup(request):
     else:
         form = SignupForm()
         return render(request, 'lectut/signup.html', {'form': form})
-
 
 
 def studentSignup(request):

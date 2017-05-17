@@ -34,6 +34,8 @@ class Post(models.Model):
     docfile = models.FileField(upload_to='documents/%Y/%m/%d', blank=True, null=True)      
     pub_time = models.DateTimeField(auto_now_add=True)  
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    likes = models.ManyToManyField(User, related_name='likes')
+    unlikes = models.ManyToManyField(User, related_name='unlikes')
     def __str__(self):
         return self.post    
 
